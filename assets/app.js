@@ -66,17 +66,22 @@
       return;
     }
     const recent = readRecent();
+    container.innerHTML = '';
     if (!recent.length) {
-      container.innerHTML = '<li>No words yet. Practice a word to populate this list.</li>';
+      const item = document.createElement('li');
+      item.textContent = 'No words yet. Practice a word to populate this list.';
+      container.appendChild(item);
       return;
     }
-
-    container.innerHTML = recent
-      .map((word) => {
-        const href = knownWordLinks[word] || '#';
-        return `<li><a href="${href}" data-recent-word="${word}">${word}</a></li>`;
-      })
-      .join('');
+    recent.forEach((word) => {
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = knownWordLinks[word] || '#';
+      link.setAttribute('data-recent-word', word);
+      link.textContent = word;
+      item.appendChild(link);
+      container.appendChild(item);
+    });
   }
 
   function setupInputTool() {
